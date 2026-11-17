@@ -4,50 +4,72 @@
   <meta charset="utf-8">
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#ff6200">
+  <meta name="theme-color" content="#ffffff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Current account">
+  <meta name="apple-mobile-web-app-title" content="ING">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="icon" href="lion-demo.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-full-180.png">
+  <link rel="icon" type="image/png" href="icon-full-192.png">
   <link rel="stylesheet" href="style.css">
-  <title>Current account</title>
+  <title>Overview</title>
 </head>
 <body>
   <main>
-    <!-- OVERVIEW SCREEN (Matches Screenshot 1) -->
+    <!-- 1. OVERVIEW SCREEN (Matches Image 1 & 2) -->
     <section id="overview">
-      <div class="overviewHeader">
-        <div class="actionsRow">
-          <button class="actionBtn" data-demo="Transfer">
-            <span class="btnCircle dark">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-            </span>
-            <span class="actionLabel">Transfer</span>
+      <header class="overviewTopBar">
+        <button class="navCircleBtn" data-demo="Filters" aria-label="Filters">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+        </button>
+        <h1 class="overviewTitle">Overview</h1>
+        <div style="display: flex; gap: 8px;">
+          <button class="navCircleBtn" data-demo="Notifications" aria-label="Notifications" style="position: relative;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notiDot"></span>
           </button>
-          <button class="actionBtn" data-demo="Request">
-            <span class="btnCircle dark">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-            </span>
-            <span class="actionLabel">Request</span>
-          </button>
-          <button class="actionBtn" data-demo="Scanner">
-            <span class="btnCircle light">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/></svg>
-            </span>
-            <span class="actionLabel">Scanner</span>
-          </button>
-          <button class="actionBtn" data-demo="Orders">
-            <span class="btnCircle light">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><text x="12" y="18" text-anchor="middle" font-size="7.5" font-weight="bold" fill="currentColor" stroke="none">31</text></svg>
-            </span>
-            <span class="actionLabel">Orders</span>
+          <button class="navCircleBtn" data-demo="Logout" aria-label="Logout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           </button>
         </div>
+      </header>
+
+      <!-- Search prompt input matching Image 2 -->
+      <div class="overviewSearchPill" data-demo="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#6e6e73" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+        <span>Type here what you want to find</span>
+      </div>
+
+      <!-- Quick Actions Row -->
+      <div class="actionsRow" style="padding-top: 4px; padding-bottom: 20px;">
+        <button class="actionBtn" data-demo="Transfer">
+          <span class="btnCircle dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </span>
+          <span class="actionLabel">Transfer</span>
+        </button>
+        <button class="actionBtn" data-demo="Request">
+          <span class="btnCircle dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </span>
+          <span class="actionLabel">Request</span>
+        </button>
+        <button class="actionBtn" data-demo="Scanner">
+          <span class="btnCircle light">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/></svg>
+          </span>
+          <span class="actionLabel">Scanner</span>
+        </button>
+        <button class="actionBtn" data-demo="Orders">
+          <span class="btnCircle light">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><text x="12" y="18" text-anchor="middle" font-size="7.5" font-weight="bold" fill="currentColor" stroke="none">31</text></svg>
+          </span>
+          <span class="actionLabel">Orders</span>
+        </button>
       </div>
 
       <div class="overviewContent">
+        <!-- 1. Current Account Card -->
         <div class="sectionTitleRow">
           <h2 class="sectionTitle">Current account</h2>
           <button class="iconCircleBtn" data-demo="Add account" aria-label="Add account">+</button>
@@ -61,22 +83,118 @@
           <strong class="overviewBalanceText" id="overviewBalance">€ 11.911,32</strong>
         </button>
 
-        <div class="sectionTitleRow" style="margin-top: 24px;">
-          <h2 class="sectionTitle" style="font-size: 20px; color: #1c1c1e;">Savings</h2>
+        <!-- 2. Your Plan Card (Matching Image 2) -->
+        <h2 class="burgundyTitle">Your plan</h2>
+        <div class="planCard" data-demo="Plan">
+          <div class="planGoBadge">
+            <span>Go</span>
+          </div>
+          <div class="planCardText">
+            <b>ING Go</b>
+            <p id="planOwner">Hr M Black</p>
+            <small id="planAccount">NL67 INGB 0665 9381 52</small>
+          </div>
+          <svg class="chevronRight" viewBox="0 0 24 24" fill="none" stroke="#8e8e93" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+
+        <!-- 3. Promotion Card: Extra interest on savings deposits (Matching Image 1 & 2) -->
+        <div class="promoCard">
+          <div class="promoTop">
+            <h3 class="promoTitle">Extra interest on savings deposits</h3>
+            <button class="dotsBtn" data-demo="Promo options" aria-label="Options">•••</button>
+          </div>
+          <div class="promoBody">
+            <div class="promoTextCol">
+              <p class="promoDesc">Limited time offer: up to 3.10% annual interest on a 9, 15 or 18-month fixed-term Savings Deposit with new savings.</p>
+              <button class="promoPillBtn" data-demo="Check promotion">Check promotion</button>
+              <button class="promoLinkBtn" data-demo="Open Savings Deposit">Open Savings Deposit</button>
+            </div>
+            <div class="promoGraphic">
+              <!-- Adorable SVG Piggy Bank on Gold Coins matching Image 1 & 2 -->
+              <svg viewBox="0 0 76 76" class="piggySvg">
+                <rect width="76" height="76" rx="16" fill="#fcebf2"/>
+                <!-- Gold coins stack -->
+                <ellipse cx="44" cy="58" rx="13" ry="4.5" fill="#f09b00"/>
+                <ellipse cx="44" cy="54" rx="13" ry="4.5" fill="#ffbe1a"/>
+                <ellipse cx="44" cy="50" rx="13" ry="4.5" fill="#f09b00"/>
+                <ellipse cx="44" cy="46" rx="13" ry="4.5" fill="#ffbe1a"/>
+                <!-- Piggy bank body -->
+                <ellipse cx="40" cy="36" rx="17" ry="13" fill="#ff4081"/>
+                <ellipse cx="40" cy="34" rx="16.5" ry="12" fill="#ff5292"/>
+                <!-- Snout -->
+                <ellipse cx="25" cy="36" rx="4.5" ry="5.5" fill="#f0246a"/>
+                <circle cx="23.5" cy="35" r="1" fill="#7a092e"/>
+                <circle cx="23.5" cy="38" r="1" fill="#7a092e"/>
+                <!-- Ear -->
+                <path d="M37 25c-1-5 5-6 6-2 1 3-3 5-6 2z" fill="#f0246a"/>
+                <!-- Eye -->
+                <circle cx="31" cy="32" r="1.8" fill="#ffffff"/>
+                <circle cx="30.5" cy="32" r="1.1" fill="#111111"/>
+                <!-- Feet -->
+                <rect x="33" y="45" width="4.5" height="5" rx="2" fill="#f0246a"/>
+                <rect x="44" y="45" width="4.5" height="5" rx="2" fill="#f0246a"/>
+                <!-- Coin slot & entering coin -->
+                <ellipse cx="45" cy="27" rx="3.5" ry="1" fill="#a80b39"/>
+                <circle cx="45" cy="23" r="3" fill="#ffbe1a" stroke="#f09b00" stroke-width="0.8"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Savings Account Card (Matching Image 1) -->
+        <div class="sectionTitleRow" style="margin-top: 26px;">
+          <h2 class="sectionTitle">Savings account</h2>
           <button class="iconCircleBtn" data-demo="Add saving" aria-label="Add saving">+</button>
         </div>
 
         <div class="accountCard" style="cursor: default;">
-          <div class="accountCardLeft">
-            <p class="accountName">Oranje Spaarrekening</p>
-            <p class="accountIban">N10765542</p>
+          <div class="savingsHouseIcon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ff6200" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="accountCardLeft" style="flex: 1; margin-left: 14px;">
+            <p class="accountName">House</p>
+            <p class="accountIban" style="display: flex; align-items: center; gap: 5px; color: #444;">
+              <svg viewBox="0 0 24 24" style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.26-8-12.355-8-5.096 0-5.096 8 0 8 5.095 0 7.26-8 12.355-8z"/></svg>
+              <span id="savingsOwner">Hr M Black</span>
+            </p>
           </div>
           <strong class="overviewBalanceText">€ 2.500,00</strong>
+        </div>
+
+        <!-- 5. Your Cards (Matching Image 1) -->
+        <h2 class="burgundyTitle" style="margin-top: 26px;">Your cards</h2>
+        <div class="cardsRow">
+          <div class="cardItem" data-demo="Debit cards">
+            <div class="orangeDebitCard">
+              <div class="cardChipBox">
+                <img src="lion-demo.svg" alt="ING Lion" style="width: 22px; height: 22px; filter: brightness(0) invert(1);">
+              </div>
+            </div>
+            <p class="cardItemLabel">Debit cards</p>
+          </div>
+          <div class="cardItem" data-demo="Apply product">
+            <div class="dashedApplyCard">
+              <span class="plusSign">+</span>
+            </div>
+            <p class="cardItemLabel" style="font-weight: 500; color: #555;">Apply for product</p>
+          </div>
+        </div>
+
+        <!-- 6. ING Points (Matching Image 1) -->
+        <div class="sectionTitleRow" style="margin-top: 26px;">
+          <h2 class="sectionTitle">ING Points</h2>
+        </div>
+        <div class="accountCard" data-demo="ING Points" style="margin-bottom: 24px;">
+          <div class="accountCardLeft">
+            <p class="accountName">ING Points</p>
+            <p class="accountIban" style="color: #666;">36.695 Points</p>
+          </div>
+          <svg class="chevronRight" viewBox="0 0 24 24" fill="none" stroke="#8e8e93" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
     </section>
 
-    <!-- ACCOUNT DETAIL SCREEN (Matches Screenshot 2) -->
+    <!-- 2. ACCOUNT DETAIL SCREEN (Matches Image 2 top & Screenshot 2) -->
     <section id="account" hidden>
       <header class="accountTopNav">
         <button id="back" class="navCircleBtn" aria-label="Back">
@@ -110,7 +228,6 @@
           </button>
           <button class="actionBtn" data-demo="Look Ahead">
             <span class="btnCircle light">
-              <!-- Binoculars icon matching screenshot 2 -->
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="6" cy="14" r="3.5" fill="currentColor"/>
                 <circle cx="18" cy="14" r="3.5" fill="currentColor"/>
@@ -121,7 +238,6 @@
           </button>
           <button class="actionBtn" data-demo="Settings">
             <span class="btnCircle light">
-              <!-- Cog / settings icon matching screenshot 2 -->
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"/>
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -158,12 +274,60 @@
       <div id="list"></div>
     </section>
 
+    <!-- 3. TRANSACTION DETAIL SCREEN (Exact Match for Image 3) -->
+    <section id="txDetail" hidden>
+      <header class="accountTopNav" style="border-bottom: 0;">
+        <button id="detailBack" class="navCircleBtn" aria-label="Back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+      </header>
+
+      <div class="txDetailHero">
+        <!-- Brand/Transfer Circle Icon -->
+        <div id="detailHeroIcon" class="txHeroIconWrap"></div>
+        <!-- Burgundy Counterparty / Merchant Name -->
+        <h2 id="detailHeroName" class="txHeroName"></h2>
+        <!-- Huge Orange / Black Amount -->
+        <h1 id="detailHeroAmount" class="txHeroAmount"></h1>
+        <!-- Type subtitle (e.g. Transfer) -->
+        <p id="detailHeroType" class="txHeroType"></p>
+      </div>
+
+      <!-- Action Buttons (Transfer, Add to address book, Download statement) -->
+      <div class="txDetailActions">
+        <button class="txDetailActionBtn" data-demo="Transfer">
+          <span class="txDetailBtnCircle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </span>
+          <span class="txDetailActionLabel">Transfer</span>
+        </button>
+        <button class="txDetailActionBtn" data-demo="Add to address book">
+          <span class="txDetailBtnCircle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><circle cx="12" cy="8" r="2"/><path d="M15 14a3 3 0 0 0-6 0"/></svg>
+          </span>
+          <span class="txDetailActionLabel">Add to address book</span>
+        </button>
+        <button class="txDetailActionBtn" data-demo="Download statement">
+          <span class="txDetailBtnCircle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </span>
+          <span class="txDetailActionLabel">Download statement</span>
+        </button>
+      </div>
+
+      <!-- Transaction Fields Group -->
+      <div class="txDetailSection">
+        <h3 class="txSectionTitle">Transaction</h3>
+        <div id="txFieldsList" class="txFieldsContainer"></div>
+      </div>
+    </section>
+
     <footer style="display:none">
       <p id="offline" role="status"></p>
     </footer>
   </main>
 
-  <!-- FLOATING BOTTOM NAVIGATION BAR (Matches Screenshot 2) -->
+  <!-- FLOATING BOTTOM NAVIGATION BAR (Matches Screenshot 1, 2, 3) -->
   <nav class="bottomBar" aria-label="Main navigation">
     <button id="home" class="active">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -199,24 +363,6 @@
     </button>
   </nav>
 
-  <!-- TRANSACTION DETAIL DIALOG -->
-  <dialog id="detail">
-    <div class="dialogTop">
-      <button id="close" class="navCircleBtn" aria-label="Close details" style="width: 32px; height: 32px;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-      </button>
-      <b>Transaction details</b>
-    </div>
-    <div class="detailBody">
-      <div class="detailIcon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      </div>
-      <h2 id="detailName"></h2>
-      <strong id="detailAmount"></strong>
-      <dl id="detailFields"></dl>
-    </div>
-  </dialog>
-
   <!-- UNLOCK DIALOG -->
   <dialog id="setup" aria-labelledby="setupTitle">
     <div class="dialogTop">
@@ -231,7 +377,20 @@
         <button id="unlockButton" class="purpleOutline" style="width: 100%;" type="submit">Unlock Data</button>
       </form>
       <p id="unlockStatus" role="status" aria-live="polite" style="font-size: 13px; color: var(--ing-orange); margin-top: 12px;"></p>
-      <p class="fineprint">Offline client-side decryption. Access code is never transmitted.</p>
+    </div>
+  </dialog>
+
+  <!-- GENERIC PREVIEW MODAL -->
+  <dialog id="detail">
+    <div class="dialogTop">
+      <button id="close" class="navCircleBtn" aria-label="Close" style="width: 32px; height: 32px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <b id="detailName">Preview</b>
+    </div>
+    <div class="detailBody">
+      <strong id="detailAmount"></strong>
+      <div id="detailFields"></div>
     </div>
   </dialog>
 

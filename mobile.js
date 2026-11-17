@@ -66,9 +66,11 @@
       input.value = '';
       setup.close();
       if (window.location.hash === '#account') {
-        screen(true);
+        screen('account');
+      } else if (window.location.hash === '#detail') {
+        screen('detail');
       } else {
-        screen(false);
+        screen('overview');
       }
       if (!result.saved) {
         alert('Data loaded, but could not be saved to local storage. You will need your access code again on reload.');

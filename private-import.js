@@ -34,6 +34,9 @@
     if ($('accountOwner')) $('accountOwner').textContent = owner;
     if ($('overviewAccount')) $('overviewAccount').textContent = acc;
     if ($('accountIban')) $('accountIban').textContent = acc;
+    if ($('planOwner')) $('planOwner').textContent = owner;
+    if ($('planAccount')) $('planAccount').textContent = acc;
+    if ($('savingsOwner')) $('savingsOwner').textContent = owner;
   }
 
   const oldRender = render;
@@ -157,6 +160,8 @@
 
   window.LedgerPrivate = {
     getStatus: () => ({ loaded: !!imported, count: imported?.transactions.length || 0 }),
+    getOwner: () => imported ? imported.owner : 'Hr M Black',
+    getAccount: () => imported ? imported.account : 'NL67 INGB 0665 9381 52',
     load(d) {
       d = validate(d);
       let saved = true;

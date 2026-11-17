@@ -686,3 +686,446 @@ footer {
   color: #8e8e93;
   padding: 24px 16px;
 }
+
+/* Overview Header & Search Pill */
+.overviewTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px 8px;
+  background: white;
+}
+
+.overviewTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1c1c1e;
+  margin: 0;
+}
+
+.notiDot {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 6px;
+  height: 6px;
+  background: var(--ing-orange);
+  border-radius: 50%;
+}
+
+.overviewSearchPill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 16px 14px;
+  background: #f2f2f7;
+  border-radius: 24px;
+  padding: 11px 16px;
+  color: #6e6e73;
+  font-size: 14.5px;
+  cursor: pointer;
+}
+
+.overviewSearchPill svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.burgundyTitle {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ing-burgundy);
+  margin: 26px 0 10px;
+  letter-spacing: -0.3px;
+}
+
+/* Plan Card */
+.planCard {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.planCard:active {
+  background: #f9f9fb;
+}
+
+.planGoBadge {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff7e2e, #ff6200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 900;
+  font-size: 19px;
+  flex-shrink: 0;
+  margin-right: 14px;
+}
+
+.planCardText {
+  flex: 1;
+  min-width: 0;
+}
+
+.planCardText b {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1c1c1e;
+  display: block;
+}
+
+.planCardText p {
+  font-size: 14px;
+  color: #3a3a3c;
+  margin: 2px 0;
+}
+
+.planCardText small {
+  font-size: 13.5px;
+  color: #6e6e73;
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+
+.chevronRight {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Promo Card */
+.promoCard {
+  background: #eaf5fe;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 18px 0;
+}
+
+.promoTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.promoTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1c1c1e;
+  margin: 0;
+}
+
+.dotsBtn {
+  background: none;
+  border: 0;
+  font-size: 16px;
+  color: #3a3a3c;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.promoBody {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.promoTextCol {
+  flex: 1;
+}
+
+.promoDesc {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #1c1c1e;
+  margin: 0 0 12px;
+}
+
+.promoPillBtn {
+  background: #ffffff;
+  border: 1.5px solid #111111;
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #111111;
+  display: inline-block;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.promoLinkBtn {
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111111;
+  text-align: left;
+  display: block;
+  cursor: pointer;
+}
+
+.promoGraphic {
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+}
+
+.piggySvg {
+  width: 76px;
+  height: 76px;
+}
+
+/* Savings House Icon */
+.savingsHouseIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #fff5ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.savingsHouseIcon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Your Cards */
+.cardsRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cardItem {
+  flex: 1;
+  cursor: pointer;
+}
+
+.orangeDebitCard {
+  height: 76px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff7e2e, #ff6200);
+  position: relative;
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.cardChipBox {
+  width: 26px;
+  height: 26px;
+}
+
+.dashedApplyCard {
+  height: 76px;
+  border-radius: 12px;
+  border: 1.5px dashed #c7c7cc;
+  background: #fbfbfd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plusSign {
+  font-size: 26px;
+  font-weight: 300;
+  color: #3a3a3c;
+}
+
+.cardItemLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1c1c1e;
+  margin: 8px 0 0;
+  text-align: left;
+}
+
+/* 3. TRANSACTION DETAIL SCREEN (Image 3) */
+#txDetail {
+  background: #ffffff;
+  min-height: 100vh;
+  padding-bottom: 120px;
+}
+
+.txDetailHero {
+  text-align: center;
+  padding: 10px 16px 18px;
+}
+
+.txHeroIconWrap {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.txHeroIconWrap svg {
+  width: 52px;
+  height: 52px;
+}
+
+.txHeroName {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ing-burgundy);
+  margin: 0 0 6px;
+  letter-spacing: -0.2px;
+}
+
+.txHeroAmount {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0 0 4px;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.txHeroAmount.positive {
+  color: var(--ing-orange);
+}
+
+.txHeroAmount.negative {
+  color: #111111;
+}
+
+.txHeroType {
+  font-size: 14.5px;
+  font-weight: 400;
+  color: #3a3a3c;
+  margin: 0;
+}
+
+.txDetailActions {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin: 16px 0 32px;
+}
+
+.txDetailActionBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  max-width: 84px;
+}
+
+.txDetailBtnCircle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f2f2f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1c1c1e;
+  transition: transform 0.15s ease;
+}
+
+.txDetailBtnCircle:active {
+  transform: scale(0.93);
+}
+
+.txDetailBtnCircle svg {
+  width: 22px;
+  height: 22px;
+}
+
+.txDetailActionLabel {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #1c1c1e;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.txDetailSection {
+  padding: 0 16px;
+  margin-top: 10px;
+}
+
+.txSectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ing-orange);
+  margin: 0 0 18px;
+}
+
+.txFieldRow {
+  margin-bottom: 22px;
+}
+
+.txFieldLabel {
+  font-size: 14px;
+  font-weight: 400;
+  color: #6e6e73;
+  margin: 0 0 4px;
+}
+
+.txFieldValueRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.txFieldMain {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c1c1e;
+  line-height: 1.35;
+}
+
+.txFieldSub {
+  font-size: 14px;
+  font-weight: 400;
+  color: #3a3a3c;
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.txCopyBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f2f2f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  border: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.txCopyBtn:active {
+  background: #e5e5ea;
+}
+
+.txCopyBtn svg {
+  width: 16px;
+  height: 16px;
+}

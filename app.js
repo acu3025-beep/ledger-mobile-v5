@@ -2,6 +2,8 @@
 
 const $ = id => document.getElementById(id);
 
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 const fmtNumber = n => new Intl.NumberFormat('nl-NL', {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2
@@ -12,7 +14,6 @@ const money = n => '€ ' + fmtNumber(n);
 const dateLabel = s => {
   const d = new Date(s + 'T12:00:00');
   const day = d.getDate();
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   return `${day} ${months[d.getMonth()]}`;
 };
 
@@ -20,16 +21,16 @@ const fields = ['search', 'amount', 'direction', 'from', 'to', 'type'];
 
 // SVG Brand & Category Icons
 const brandIcons = {
-  // Orange Transfer circle with (€) -> (Exact match for Screenshot 2)
+  // Orange Transfer circle with (€) -> (Exact match for Screenshot 2 & 3)
   orangeTransfer: `<svg viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="19" fill="#ff6200"/><circle cx="13" cy="19" r="7.5" stroke="#ffffff" stroke-width="1.8"/><path d="M14.5 16.5c-.4-.6-1-1-1.8-1-1.3 0-2.2 1.1-2.2 2.5 0 1.5.9 2.5 2.2 2.5.8 0 1.4-.4 1.8-1M10 18h4.5M10 20h4.5" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round"/><path d="M23 19h7m-3-3 3 3-3 3" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
 
-  // KFC Logo (Screenshot 2)
+  // KFC Logo
   kfc: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#a3080c"/><rect x="6" y="5" width="26" height="28" rx="3" fill="#ffffff"/><path d="M10 5h5v28h-5zM23 5h5v28h-5z" fill="#a3080c"/><text x="19" y="22" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-weight="900" font-size="9" fill="#a3080c" text-anchor="middle" letter-spacing="-0.5">KFC</text></svg>`,
 
-  // Shell Logo (Screenshot 2)
+  // Shell Logo
   shell: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#ffffff"/><path d="M19 6c-6.6 0-11.5 4.5-12 11.5-.4 4.5 2.2 9 6.5 11.5l1.5 3h8l1.5-3c4.3-2.5 6.9-7 6.5-11.5C30.5 10.5 25.6 6 19 6z" fill="#fbce07" stroke="#dd1d21" stroke-width="2"/><path d="M19 6v22M14 9l2 19M24 9l-2 19M10 14l5 13M28 14l-5 13" stroke="#dd1d21" stroke-width="1.5"/></svg>`,
 
-  // TMC Logo (Screenshot 2)
+  // TMC Logo
   tmc: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#2d6cb5"/><text x="19" y="23" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-weight="900" font-size="12" fill="#ffffff" text-anchor="middle" font-style="italic">TMC</text></svg>`,
 
   // Uber Logo
@@ -76,8 +77,8 @@ function getDisplayInfo(t) {
   const name = t.name || '';
   const upper = name.toUpperCase();
 
-  // Special match for Screenshot 2 items
-  if (upper.includes('GEMEENTE') || upper.includes('AMSTERDAM') && t.amount > 0) {
+  // Match special items
+  if (upper.includes('GEMEENTE') || (upper.includes('AMSTERDAM') && t.amount > 0)) {
     return { name: 'Gemeente Amsterdam', icon: brandIcons.orangeTransfer, isCircle: true };
   }
   if (upper.includes('KFC')) {
@@ -132,10 +133,12 @@ function getDisplayInfo(t) {
 }
 
 let lastFocus;
+let currentSelectedTx = null;
 
-function screen(accountView) {
-  $('overview').hidden = accountView;
-  $('account').hidden = !accountView;
+function screen(view) {
+  $('overview').hidden = (view !== 'overview');
+  $('account').hidden = (view !== 'account');
+  $('txDetail').hidden = (view !== 'detail');
   window.scrollTo(0, 0);
 }
 
@@ -149,28 +152,38 @@ function searchMode(open) {
   }
 }
 
+// Navigation event handlers
 $('openAccount').onclick = () => {
   window.location.hash = 'account';
-  screen(true);
+  screen('account');
   searchMode(false);
 };
 $('back').onclick = () => {
   window.location.hash = '';
-  screen(false);
+  screen('overview');
 };
 $('home').onclick = () => {
   window.location.hash = '';
-  screen(false);
+  screen('overview');
+};
+$('detailBack').onclick = () => {
+  window.location.hash = 'account';
+  screen('account');
 };
 $('searchToggle').onclick = () => searchMode(true);
 $('searchClose').onclick = () => searchMode(false);
 
 window.addEventListener('hashchange', () => {
-  screen(window.location.hash === '#account');
+  const h = window.location.hash;
+  if (h === '#detail' && currentSelectedTx) {
+    renderTxDetail(currentSelectedTx);
+    screen('detail');
+  } else if (h === '#account') {
+    screen('account');
+  } else {
+    screen('overview');
+  }
 });
-if (window.location.hash === '#account') {
-  screen(true);
-}
 
 let visibleLimit = 80;
 let lastFilterKey = '';
@@ -185,8 +198,6 @@ function render() {
 
   const rows = Ledger.filter(DEMO_DATA, f);
   $('list').replaceChildren();
-  if ($('count')) $('count').textContent = '';
-  if ($('resultTotal')) $('resultTotal').textContent = '';
 
   let currentDate = '';
   let groupEl = null;
@@ -248,47 +259,133 @@ function render() {
   }
 }
 
-function show(t) {
-  lastFocus = document.activeElement;
-  $('detailName').textContent = t.name;
-  $('detailAmount').textContent = (t.amount > 0 ? '€ +' : '€ -') + fmtNumber(Math.abs(t.amount));
-  
-  $('detailFields').replaceChildren();
-  const names = {
-    income: 'Income',
-    transfer: 'Transfer',
-    card: 'Card payment',
-    'direct-debit': 'Direct debit'
-  };
+// Full Transaction Detail View matching Image 3
+function renderTxDetail(t) {
+  const info = getDisplayInfo(t);
+  const isPositive = t.amount > 0;
 
-  const values = {
-    'Date': dateLabel(t.date),
-    'Category': t.category || 'Payment',
-    'Type': names[t.type] || t.type,
-    'Account': t.account || 'NL67 INGB 0665 9381 52',
-    'Description': t.description || ''
-  };
+  // Hero Section
+  $('detailHeroIcon').innerHTML = info.icon;
+  $('detailHeroName').textContent = info.name;
+  $('detailHeroAmount').textContent = (isPositive ? '€ +' : '€ -') + fmtNumber(Math.abs(t.amount));
+  $('detailHeroAmount').className = 'txHeroAmount ' + (isPositive ? 'positive' : 'negative');
+  $('detailHeroType').textContent = t.sourceType || (isPositive ? 'Transfer' : 'Payment terminal');
 
-  if (t.modified) {
-    values['Original date'] = dateLabel(t.originalDate);
-    values['Original amount'] = money(t.originalAmount);
-    values['DEMO Scenario'] = 'EUR -1.050,00 on the 25th of the month.';
+  // Fields Section
+  const container = $('txFieldsList');
+  container.replaceChildren();
+
+  function addField(label, mainText, subText, copyVal) {
+    const row = document.createElement('div');
+    row.className = 'txFieldRow';
+
+    const lbl = document.createElement('p');
+    lbl.className = 'txFieldLabel';
+    lbl.textContent = label;
+    row.append(lbl);
+
+    const valRow = document.createElement('div');
+    valRow.className = 'txFieldValueRow';
+
+    const textCol = document.createElement('div');
+    const main = document.createElement('div');
+    main.className = 'txFieldMain';
+    main.textContent = mainText;
+    textCol.append(main);
+
+    if (subText) {
+      const sub = document.createElement('div');
+      sub.className = 'txFieldSub';
+      sub.textContent = subText;
+      textCol.append(sub);
+    }
+    valRow.append(textCol);
+
+    if (copyVal) {
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'txCopyBtn';
+      copyBtn.setAttribute('aria-label', 'Copy ' + label);
+      copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+      copyBtn.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(copyVal.replace(/\s+/g, ''));
+          copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#00875a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+          setTimeout(() => {
+            copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+          }, 1500);
+        } catch (e) {}
+      };
+      valRow.append(copyBtn);
+    }
+
+    row.append(valRow);
+    container.append(row);
   }
 
-  for (const [key, value] of Object.entries(values)) {
-    const dt = document.createElement('dt');
-    const dd = document.createElement('dd');
-    dt.textContent = key;
-    dd.textContent = value;
-    dd.style.whiteSpace = 'pre-wrap';
-    $('detailFields').append(dt, dd);
+  const owner = window.LedgerPrivate?.getOwner?.() || 'Hr M Black';
+  const myAccount = window.LedgerPrivate?.getAccount?.() || 'NL67 INGB 0665 9381 52';
+
+  // Extract IBAN from description
+  const ibanMatch = t.description && t.description.match(/IBAN:\s*([A-Z0-9]+)/i);
+  let otherIban = '';
+  if (ibanMatch) {
+    const raw = ibanMatch[1];
+    otherIban = raw.length === 18
+      ? `${raw.slice(0,4)} ${raw.slice(4,8)} ${raw.slice(8,12)} ${raw.slice(12,16)} ${raw.slice(16)}`
+      : raw;
   }
 
-  $('detail').showModal();
+  if (isPositive) {
+    // Exactly matches Image 3 (From A KHAZANI, To Hr M Black)
+    addField('From', info.name, otherIban, otherIban);
+    addField('To', owner, myAccount, myAccount);
+  } else {
+    addField('From', owner, myAccount, myAccount);
+    addField('To', info.name, otherIban || undefined, otherIban || undefined);
+  }
+
+  // Card details if available
+  const cardMatch = t.description && t.description.match(/Card no:\s*(.+)/i);
+  if (cardMatch) {
+    addField('Card', cardMatch[1].trim());
+  }
+  if (t.description && t.description.includes('Apple Pay')) {
+    addField('Payment method', 'Apple Pay');
+  }
+
+  // Transaction Date & Time
+  let txDateStr = dateLabel(t.date);
+  const dtMatch = t.description && t.description.match(/Date\/time:\s*(\d{2})\/(\d{2})\/(\d{4})\s*(\d{1,2}):(\d{2})/i);
+  const timeMatch = t.description && t.description.match(/Time:\s*(\d{1,2}):(\d{2})/i);
+  if (dtMatch) {
+    txDateStr = `${dateLabel(t.date)} at ${Number(dtMatch[4])}:${dtMatch[5]}`;
+  } else if (timeMatch) {
+    txDateStr = `${dateLabel(t.date)} at ${Number(timeMatch[1])}:${timeMatch[2]}`;
+  }
+  addField('Transaction date', txDateStr);
+
+  // Processing Date
+  let procDateStr = dateLabel(t.date);
+  const valMatch = t.description && t.description.match(/Value date:\s*(\d{2})\/(\d{2})\/(\d{4})/i);
+  if (valMatch) {
+    const d = new Date(`${valMatch[3]}-${valMatch[2]}-${valMatch[1]}T12:00:00`);
+    procDateStr = `${d.getDate()} ${months[d.getMonth()]}`;
+  }
+  addField('Processing date', procDateStr);
+
+  // Description / note
+  const descMatch = t.description && t.description.match(/Description:\s*(.+)/i);
+  if (descMatch && descMatch[1].trim()) {
+    addField('Description', descMatch[1].trim());
+  }
 }
 
-$('close').onclick = () => $('detail').close();
-$('detail').addEventListener('close', () => lastFocus?.focus());
+function show(t) {
+  currentSelectedTx = t;
+  window.location.hash = 'detail';
+  renderTxDetail(t);
+  screen('detail');
+}
 
 fields.forEach(id => $(id).addEventListener('input', () => render()));
 $('reset').onclick = () => {
@@ -300,17 +397,19 @@ document.querySelectorAll('[data-demo]').forEach(b => {
   b.onclick = () => {
     lastFocus = b;
     $('detailName').textContent = b.dataset.demo;
-    $('detailAmount').textContent = 'DEMO';
-    $('detailFields').textContent = 'This action is a demo preview.';
+    $('detailAmount').textContent = '';
+    $('detailFields').textContent = 'Feature preview.';
     $('detail').showModal();
   };
 });
 
-function network() {
-  $('connection').textContent = navigator.onLine ? 'Online' : 'Offline';
+// Initial screen check
+if (window.location.hash === '#account') {
+  screen('account');
+} else if (window.location.hash === '#detail') {
+  screen('account');
+} else {
+  screen('overview');
 }
 
-window.addEventListener('online', network);
-window.addEventListener('offline', network);
-network();
 render();
