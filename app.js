@@ -1,4 +1,318 @@
-const $=id=>document.getElementById(id),money=n=>new Intl.NumberFormat('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n),dateLabel=s=>new Intl.DateTimeFormat('nl-NL',{day:'numeric',month:'long',year:'numeric'}).format(new Date(s+'T12:00:00'));const fields=['search','amount','direction','from','to','type'];const icons={"back":"m15 5-7 7 7 7","search":"M21 21l-5-5 M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0","up":"M12 21V3 m-7 7 7-7 7 7","down":"M12 3v18 m-7-7 7 7 7-7","wallet":"M3 7h18v14H3z M3 7l13-5 3 5 M16 13h5v4h-5z","bulb":"M8 16c0-3-3-3-3-7a7 7 0 0 1 14 0c0 4-3 4-3 7z M9 20h6 M10 23h4 M12 0v2 M1 9h2 M21 9h2","trend":"M2 19l7-7 4 3 9-12 M15 3h7v7","bag":"M3 8h18l-2 13H5z M7 8l5-6 5 6","service":"M3 13v-3a9 9 0 0 1 18 0v3 M3 12h3v7H3z M18 12h3v7h-3z M18 19v3h-6","settings":"M4 5h16 M4 12h16 M4 19h16 M8 2v6 M16 9v6 M8 16v6","bell":"M4 18h16l-3-4V8a5 5 0 0 0-10 0v6z M10 22h4","plus":"M12 3v18 M3 12h18","card":"M2 5h20v14H2z M2 10h20 M6 15h4","calendar":"M3 5h18v16H3z M7 2v6 M17 2v6 M3 11h18","qr":"M2 2h7v7H2z M15 2h7v7h-7z M2 15h7v7H2z M15 15h3v3h4v4h-7z","house":"M2 11 12 2l10 9 M5 9v13h14V9 M10 22v-8h5v8","coffee":"M3 5h14v8a7 7 0 0 1-14 0z M17 6h3a3 3 0 0 1 0 6h-3 M1 22h19","doc":"M5 2h9l5 5v15H5z M14 2v6h5 M8 13h8 M8 17h6"};function svg(name){const e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','1.8');e.setAttribute('aria-hidden','true');const p=document.createElementNS(e.namespaceURI,'path');p.setAttribute('d',icons[name]||icons.doc);e.append(p);return e}const total=DEMO_DATA.reduce((a,t)=>a+t.amount,0);$('balance').textContent=$('overviewBalance').textContent='EUR '+money(total);let lastFocus;
-function screen(account){$('overview').hidden=account;$('account').hidden=!account;window.scrollTo(0,0)}function searchMode(open){$('searchPanel').hidden=!open;$('accountIntro').hidden=open;if(open)$('search').focus();else{fields.forEach(id=>$(id).value='');render()}}$('openAccount').onclick=()=>{screen(true);searchMode(false)};$('back').onclick=()=>screen(false);$('home').onclick=()=>screen(false);$('overviewSearch').onclick=()=>{screen(true);searchMode(true)};$('searchToggle').onclick=()=>searchMode(true);$('searchClose').onclick=()=>searchMode(false);
-let visibleLimit=80,lastFilterKey="";function render(){const f=Object.fromEntries(fields.map(id=>[id==='search'?'q':id,$(id).value]));const filterKey=JSON.stringify(f);if(filterKey!==lastFilterKey){visibleLimit=80;lastFilterKey=filterKey}const rows=Ledger.filter(DEMO_DATA,f);$('list').replaceChildren();$('count').textContent=rows.length+' fictieve transacties';$('resultTotal').textContent='EUR '+money(rows.reduce((a,t)=>a+t.amount,0));let date='',group;for(const t of rows.slice(0,visibleLimit)){if(t.date!==date){date=t.date;group=document.createElement('section');group.className='dategroup';const h=document.createElement('div');h.className='datehead';const label=document.createElement('span'),currency=document.createElement('span');label.textContent=dateLabel(date);currency.textContent='EUR';h.append(label,currency);group.append(h);$('list').append(group)}const b=document.createElement('button');b.className='row';const i=document.createElement('span');i.className='transactionIcon';i.append(svg(t.type==='card'?'card':t.type==='income'?'down':'doc'));const name=document.createElement('span');name.className='transactionName';name.textContent=t.name;const amt=document.createElement('span');amt.className='amount'+(t.amount>0?' positive':'');amt.textContent=(t.amount>0?'+':'')+money(t.amount);b.append(i,name,amt);b.onclick=()=>show(t);group.append(b)}if(rows.length>visibleLimit){const more=document.createElement('button');more.className='purpleOutline';more.style.margin='16px';more.textContent='Meer transacties ('+Math.min(80,rows.length-visibleLimit)+')';more.onclick=()=>{visibleLimit+=80;render()};$('list').append(more)}if(!rows.length){const p=document.createElement('p');p.className='empty';p.textContent=f.from&&f.to&&f.from>f.to?'De begindatum ligt na de einddatum.':'Geen resultaten. Pas uw zoekopdracht of filters aan.';$('list').append(p)}}
-function show(t){lastFocus=document.activeElement;$('detailName').textContent=t.name;$('detailAmount').textContent='EUR '+(t.amount>0?'+':'')+money(t.amount);$('detailFields').replaceChildren();const names={income:'Inkomen',transfer:'Overboeking',card:'Betaalpas','direct-debit':'Incasso'};for(const [key,value]of Object.entries({'Datum':dateLabel(t.date),'Categorie':t.category,'Type':names[t.type],'Demo rekening':t.account,'Demo referentie':t.id,'Omschrijving':t.description})){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=key;dd.textContent=value;$('detailFields').append(dt,dd)}$('detail').showModal()}$('close').onclick=()=>$('detail').close();$('detail').addEventListener('close',()=>lastFocus?.focus());fields.forEach(id=>$(id).addEventListener('input',()=>render()));$('reset').onclick=()=>{fields.forEach(id=>$(id).value='');render()};document.querySelectorAll('[data-demo]').forEach(b=>b.onclick=()=>{lastFocus=b;$('detailName').textContent=b.dataset.demo;$('detailAmount').textContent='DEMO';$('detailFields').textContent='Dit onderdeel is een voorbeeld. Er worden geen betalingen of bankhandelingen uitgevoerd.';$('detail').showModal()});function network(){const el=$('connection');if(el)el.textContent=navigator.onLine?'Online':'Offline'}window.addEventListener('online',network);window.addEventListener('offline',network);network();render();
+'use strict';
+
+const $ = id => document.getElementById(id);
+
+const fmtNumber = n => new Intl.NumberFormat('nl-NL', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+}).format(n);
+
+const money = n => '€ ' + fmtNumber(n);
+
+const dateLabel = s => {
+  const d = new Date(s + 'T12:00:00');
+  const day = d.getDate();
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  return `${day} ${months[d.getMonth()]}`;
+};
+
+const fields = ['search', 'amount', 'direction', 'from', 'to', 'type'];
+
+// SVG Brand & Category Icons
+const brandIcons = {
+  // Orange Transfer circle with (€) -> (Exact match for Screenshot 2)
+  orangeTransfer: `<svg viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="19" fill="#ff6200"/><circle cx="13" cy="19" r="7.5" stroke="#ffffff" stroke-width="1.8"/><path d="M14.5 16.5c-.4-.6-1-1-1.8-1-1.3 0-2.2 1.1-2.2 2.5 0 1.5.9 2.5 2.2 2.5.8 0 1.4-.4 1.8-1M10 18h4.5M10 20h4.5" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round"/><path d="M23 19h7m-3-3 3 3-3 3" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+
+  // KFC Logo (Screenshot 2)
+  kfc: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#a3080c"/><rect x="6" y="5" width="26" height="28" rx="3" fill="#ffffff"/><path d="M10 5h5v28h-5zM23 5h5v28h-5z" fill="#a3080c"/><text x="19" y="22" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-weight="900" font-size="9" fill="#a3080c" text-anchor="middle" letter-spacing="-0.5">KFC</text></svg>`,
+
+  // Shell Logo (Screenshot 2)
+  shell: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#ffffff"/><path d="M19 6c-6.6 0-11.5 4.5-12 11.5-.4 4.5 2.2 9 6.5 11.5l1.5 3h8l1.5-3c4.3-2.5 6.9-7 6.5-11.5C30.5 10.5 25.6 6 19 6z" fill="#fbce07" stroke="#dd1d21" stroke-width="2"/><path d="M19 6v22M14 9l2 19M24 9l-2 19M10 14l5 13M28 14l-5 13" stroke="#dd1d21" stroke-width="1.5"/></svg>`,
+
+  // TMC Logo (Screenshot 2)
+  tmc: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#2d6cb5"/><text x="19" y="23" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-weight="900" font-size="12" fill="#ffffff" text-anchor="middle" font-style="italic">TMC</text></svg>`,
+
+  // Uber Logo
+  uber: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#000000"/><text x="19" y="24" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-weight="700" font-size="12" fill="#ffffff" text-anchor="middle" letter-spacing="-0.5">Uber</text></svg>`,
+
+  // Albert Heijn Logo
+  ah: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#00a1e4"/><text x="19" y="24" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-weight="900" font-size="14" fill="#ffffff" text-anchor="middle" letter-spacing="-1">ah</text></svg>`,
+
+  // Dirk Logo
+  dirk: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#e3001b"/><text x="19" y="24" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-weight="900" font-size="12" fill="#ffffff" text-anchor="middle">Dirk</text></svg>`,
+
+  // Vomar Logo
+  vomar: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#e30613"/><text x="19" y="24" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-weight="900" font-size="10" fill="#ffffff" text-anchor="middle">VOMAR</text></svg>`,
+
+  // Aldi Logo
+  aldi: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#002060"/><path d="M8 8h22v22H8z" fill="#002060"/><path d="M12 28l6-18h4l6 18h-4l-1.5-5h-9L12 28z" fill="#ffffff"/><path d="M15 19h6l-3-9z" fill="#ed8b00"/></svg>`,
+
+  // DekaMarkt Logo
+  dekamarkt: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#e2001a"/><text x="19" y="24" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-weight="900" font-size="9" fill="#ffde00" text-anchor="middle">DEKA</text></svg>`,
+
+  // Shelter Amsterdam Logo
+  shelter: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#1c1c1e"/><rect x="11" y="11" width="16" height="16" rx="2" fill="none" stroke="#ffffff" stroke-width="2"/><circle cx="19" cy="19" r="4" fill="#ffffff"/></svg>`,
+
+  // OVpay Logo
+  ovpay: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#e6007e"/><path d="M12 24c0-5 3-9 7-9s7 4 7 9" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="19" cy="11" r="3" fill="#ffffff"/></svg>`,
+
+  // TicketSwap
+  ticketswap: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#00b0ff"/><path d="M12 15h14M12 23h14M22 11l4 4-4 4M16 27l-4-4 4-4" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+
+  // Kruidvat
+  kruidvat: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#e3001b"/><circle cx="19" cy="19" r="10" fill="#ffed00"/><path d="M19 13v12M13 19h12" stroke="#e3001b" stroke-width="3" stroke-linecap="round"/></svg>`,
+
+  // Generic Card Terminal
+  card: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#f2f2f7"/><rect x="8" y="12" width="22" height="14" rx="2" fill="none" stroke="#555" stroke-width="1.8"/><line x1="8" y1="16" x2="30" y2="16" stroke="#555" stroke-width="1.8"/><circle cx="13" cy="22" r="1.5" fill="#555"/></svg>`,
+
+  // Generic Direct Debit
+  directDebit: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#f2f2f7"/><path d="M12 23V15m7 8V11m7 12V18" stroke="#ff6200" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+
+  // Generic Transfer
+  transfer: `<svg viewBox="0 0 38 38"><rect width="38" height="38" rx="8" fill="#f2f2f7"/><path d="M10 15h18m-5-5 5 5-5 5M28 23H10m5 5-5-5 5-5" stroke="#ff6200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+};
+
+function getDisplayInfo(t) {
+  const name = t.name || '';
+  const upper = name.toUpperCase();
+
+  // Special match for Screenshot 2 items
+  if (upper.includes('GEMEENTE') || upper.includes('AMSTERDAM') && t.amount > 0) {
+    return { name: 'Gemeente Amsterdam', icon: brandIcons.orangeTransfer, isCircle: true };
+  }
+  if (upper.includes('KFC')) {
+    return { name: 'KFC', icon: brandIcons.kfc, isCircle: false };
+  }
+  if (upper.includes('SHELL')) {
+    return { name: 'Shell', icon: brandIcons.shell, isCircle: false };
+  }
+  if (upper.includes('TMC')) {
+    return { name: 'TMC', icon: brandIcons.tmc, isCircle: false };
+  }
+  if (upper.includes('KHAZANI')) {
+    return { name: 'A KHAZANI', icon: brandIcons.orangeTransfer, isCircle: true };
+  }
+  if (upper.includes('SHELTER')) {
+    return { name: 'Shelter Amsterdam', icon: brandIcons.shelter, isCircle: false };
+  }
+  if (upper.includes('DEKAMARKT')) {
+    return { name: 'DekaMarkt', icon: brandIcons.dekamarkt, isCircle: false };
+  }
+  if (upper.includes('UBER')) {
+    return { name: 'Uber', icon: brandIcons.uber, isCircle: false };
+  }
+  if (upper.includes('DIRK')) {
+    return { name: 'Dirk', icon: brandIcons.dirk, isCircle: false };
+  }
+  if (upper.includes('VOMAR')) {
+    return { name: 'Vomar', icon: brandIcons.vomar, isCircle: false };
+  }
+  if (upper.includes('ALDI')) {
+    return { name: 'ALDI', icon: brandIcons.aldi, isCircle: false };
+  }
+  if (upper.includes('ALBERT HEIJN')) {
+    return { name: 'Albert Heijn', icon: brandIcons.ah, isCircle: false };
+  }
+  if (upper.includes('KRUIDVAT')) {
+    return { name: 'Kruidvat', icon: brandIcons.kruidvat, isCircle: false };
+  }
+  if (upper.includes('OVPAY')) {
+    return { name: 'OVpay', icon: brandIcons.ovpay, isCircle: false };
+  }
+  if (upper.includes('TICKETSWAP')) {
+    return { name: 'TicketSwap', icon: brandIcons.ticketswap, isCircle: false };
+  }
+  if (t.amount > 0) {
+    return { name: name, icon: brandIcons.orangeTransfer, isCircle: true };
+  }
+  if (t.type === 'direct-debit') {
+    return { name: name, icon: brandIcons.directDebit, isCircle: false };
+  }
+  return { name: name, icon: brandIcons.card, isCircle: false };
+}
+
+let lastFocus;
+
+function screen(accountView) {
+  $('overview').hidden = accountView;
+  $('account').hidden = !accountView;
+  window.scrollTo(0, 0);
+}
+
+function searchMode(open) {
+  $('searchPanel').hidden = !open;
+  $('accountIntro').hidden = open;
+  if (open) $('search').focus();
+  else {
+    fields.forEach(id => $(id).value = '');
+    render();
+  }
+}
+
+$('openAccount').onclick = () => {
+  window.location.hash = 'account';
+  screen(true);
+  searchMode(false);
+};
+$('back').onclick = () => {
+  window.location.hash = '';
+  screen(false);
+};
+$('home').onclick = () => {
+  window.location.hash = '';
+  screen(false);
+};
+$('searchToggle').onclick = () => searchMode(true);
+$('searchClose').onclick = () => searchMode(false);
+
+window.addEventListener('hashchange', () => {
+  screen(window.location.hash === '#account');
+});
+if (window.location.hash === '#account') {
+  screen(true);
+}
+
+let visibleLimit = 80;
+let lastFilterKey = '';
+
+function render() {
+  const f = Object.fromEntries(fields.map(id => [id === 'search' ? 'q' : id, $(id).value]));
+  const filterKey = JSON.stringify(f);
+  if (filterKey !== lastFilterKey) {
+    visibleLimit = 80;
+    lastFilterKey = filterKey;
+  }
+
+  const rows = Ledger.filter(DEMO_DATA, f);
+  $('list').replaceChildren();
+  $('count').textContent = rows.length + ' transactions · DEMO';
+  
+  const totalVal = rows.reduce((a, t) => a + t.amount, 0);
+  $('resultTotal').textContent = money(totalVal);
+
+  let currentDate = '';
+  let groupEl = null;
+
+  for (const t of rows.slice(0, visibleLimit)) {
+    if (t.date !== currentDate) {
+      currentDate = t.date;
+      groupEl = document.createElement('section');
+      groupEl.className = 'dategroup';
+
+      const head = document.createElement('div');
+      head.className = 'datehead';
+      head.textContent = dateLabel(currentDate);
+
+      groupEl.append(head);
+      $('list').append(groupEl);
+    }
+
+    const rowBtn = document.createElement('button');
+    rowBtn.className = 'txRow';
+    rowBtn.type = 'button';
+
+    const info = getDisplayInfo(t);
+
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'txIconWrap' + (info.isCircle ? ' circle' : '');
+    iconSpan.innerHTML = info.icon;
+
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'txName';
+    nameSpan.textContent = info.name;
+
+    const amtSpan = document.createElement('span');
+    amtSpan.className = 'txAmount' + (t.amount > 0 ? ' positive' : '');
+    amtSpan.textContent = (t.amount > 0 ? '€ +' : '€ -') + fmtNumber(Math.abs(t.amount));
+
+    rowBtn.append(iconSpan, nameSpan, amtSpan);
+    rowBtn.onclick = () => show(t);
+    groupEl.append(rowBtn);
+  }
+
+  if (rows.length > visibleLimit) {
+    const moreBtn = document.createElement('button');
+    moreBtn.className = 'purpleOutline';
+    moreBtn.style.cssText = 'display:block;margin:20px auto;';
+    moreBtn.textContent = 'More transactions (' + Math.min(80, rows.length - visibleLimit) + ')';
+    moreBtn.onclick = () => {
+      visibleLimit += 80;
+      render();
+    };
+    $('list').append(moreBtn);
+  }
+
+  if (!rows.length) {
+    const p = document.createElement('p');
+    p.style.cssText = 'padding:40px 16px;text-align:center;color:#8e8e93;';
+    p.textContent = f.from && f.to && f.from > f.to ? 'Start date is after end date.' : 'No transactions found. Adjust your search or filters.';
+    $('list').append(p);
+  }
+}
+
+function show(t) {
+  lastFocus = document.activeElement;
+  $('detailName').textContent = t.name;
+  $('detailAmount').textContent = (t.amount > 0 ? '€ +' : '€ -') + fmtNumber(Math.abs(t.amount));
+  
+  $('detailFields').replaceChildren();
+  const names = {
+    income: 'Income',
+    transfer: 'Transfer',
+    card: 'Card payment',
+    'direct-debit': 'Direct debit'
+  };
+
+  const values = {
+    'Date': dateLabel(t.date),
+    'Category': t.category || 'Payment',
+    'Type': names[t.type] || t.type,
+    'Account': t.account || 'NL67 INGB 0665 9381 52',
+    'Description': t.description || ''
+  };
+
+  if (t.modified) {
+    values['Original date'] = dateLabel(t.originalDate);
+    values['Original amount'] = money(t.originalAmount);
+    values['DEMO Scenario'] = 'EUR -1.050,00 on the 25th of the month.';
+  }
+
+  for (const [key, value] of Object.entries(values)) {
+    const dt = document.createElement('dt');
+    const dd = document.createElement('dd');
+    dt.textContent = key;
+    dd.textContent = value;
+    dd.style.whiteSpace = 'pre-wrap';
+    $('detailFields').append(dt, dd);
+  }
+
+  $('detail').showModal();
+}
+
+$('close').onclick = () => $('detail').close();
+$('detail').addEventListener('close', () => lastFocus?.focus());
+
+fields.forEach(id => $(id).addEventListener('input', () => render()));
+$('reset').onclick = () => {
+  fields.forEach(id => $(id).value = '');
+  render();
+};
+
+document.querySelectorAll('[data-demo]').forEach(b => {
+  b.onclick = () => {
+    lastFocus = b;
+    $('detailName').textContent = b.dataset.demo;
+    $('detailAmount').textContent = 'DEMO';
+    $('detailFields').textContent = 'This action is a demo preview.';
+    $('detail').showModal();
+  };
+});
+
+function network() {
+  $('connection').textContent = navigator.onLine ? 'Online' : 'Offline';
+}
+
+window.addEventListener('online', network);
+window.addEventListener('offline', network);
+network();
+render();
