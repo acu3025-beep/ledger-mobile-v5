@@ -15,12 +15,6 @@
   <title>Current account</title>
 </head>
 <body>
-  <aside class="demobar">
-    <img src="lion-demo.svg" alt="ING Demo Logo">
-    <span>DEMO · V5</span>
-    <small id="connection">Online</small>
-  </aside>
-
   <main>
     <!-- OVERVIEW SCREEN (Matches Screenshot 1) -->
     <section id="overview">
@@ -160,19 +154,11 @@
         </details>
       </section>
 
-      <div class="resultInfo"><span id="count" role="status" aria-live="polite"></span></div>
-
       <!-- Live Transaction List -->
       <div id="list"></div>
-
-      <div class="totalRow">
-        <span>Results total</span>
-        <strong id="resultTotal">€ 0,00</strong>
-      </div>
     </section>
 
-    <footer>
-      Ledger DEMO 5 · Independent Prototype
+    <footer style="display:none">
       <p id="offline" role="status"></p>
     </footer>
   </main>
@@ -220,7 +206,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       </button>
       <b>Transaction details</b>
-      <span class="badge">DEMO</span>
     </div>
     <div class="detailBody">
       <div class="detailIcon">
@@ -228,20 +213,17 @@
       </div>
       <h2 id="detailName"></h2>
       <strong id="detailAmount"></strong>
-      <p class="demoNote">Demo transaction</p>
       <dl id="detailFields"></dl>
-      <p class="fineprint">This is an offline demonstration scenario.</p>
     </div>
   </dialog>
 
   <!-- UNLOCK DIALOG -->
   <dialog id="setup" aria-labelledby="setupTitle">
     <div class="dialogTop">
-      <b id="setupTitle">Ledger DEMO 5</b>
-      <span class="badge">DEMO</span>
+      <b id="setupTitle">Current account</b>
     </div>
     <div class="detailBody">
-      <h2 style="font-size: 19px; margin: 0 0 8px;">Personal DEMO Version</h2>
+      <h2 style="font-size: 19px; margin: 0 0 8px;">Access</h2>
       <p style="color: #666; font-size: 14px; margin: 0 0 16px;">All transactions are encrypted. Enter your access code to open them on this device.</p>
       <form id="unlockForm">
         <label for="vaultPassword" style="font-size: 13px; font-weight: 600; color: #333;">Access Code</label>

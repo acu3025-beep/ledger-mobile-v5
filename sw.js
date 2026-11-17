@@ -1,6 +1,6 @@
 const ROOT = new URL('./', self.location.href).pathname;
 const PREFIX = 'ledger-mobile5-' + ROOT;
-const CACHE = PREFIX + '-20261117-2';
+const CACHE = PREFIX + '-20261117-3';
 const ASSETS = [
   './',
   './index.html',

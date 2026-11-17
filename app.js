@@ -185,10 +185,8 @@ function render() {
 
   const rows = Ledger.filter(DEMO_DATA, f);
   $('list').replaceChildren();
-  $('count').textContent = rows.length + ' transactions · DEMO';
-  
-  const totalVal = rows.reduce((a, t) => a + t.amount, 0);
-  $('resultTotal').textContent = money(totalVal);
+  if ($('count')) $('count').textContent = '';
+  if ($('resultTotal')) $('resultTotal').textContent = '';
 
   let currentDate = '';
   let groupEl = null;

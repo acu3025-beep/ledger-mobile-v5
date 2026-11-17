@@ -59,38 +59,8 @@ svg {
   display: none !important;
 }
 
-/* Demo banner at top - subtle and unobtrusive */
 .demobar {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 480px;
-  z-index: 1000;
-  background: #fff5ed;
-  border-bottom: 1px solid #ffd8bf;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 16px;
-  color: #c74b00;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.demobar img {
-  height: 20px;
-  width: 20px;
-}
-
-.demobar small {
-  margin-left: auto;
-  font-size: 10px;
-  font-weight: 500;
-  color: #888;
+  display: none !important;
 }
 
 main {
@@ -98,13 +68,13 @@ main {
   margin: auto;
   background: white;
   min-height: 100vh;
-  padding: 30px 0 100px;
+  padding: 0 0 100px;
 }
 
 /* Overview screen */
 #overview {
   background: #f7f7f9;
-  min-height: calc(100vh - 30px);
+  min-height: 100vh;
 }
 
 .overviewHeader {
@@ -282,7 +252,7 @@ main {
 /* Account Detail Screen (matches Screenshot 2) */
 #account {
   background: #ffffff;
-  min-height: calc(100vh - 30px);
+  min-height: 100vh;
 }
 
 .accountTopNav {
@@ -291,7 +261,7 @@ main {
   justify-content: space-between;
   padding: 12px 16px 8px;
   position: sticky;
-  top: 30px;
+  top: 0;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   z-index: 10;
@@ -583,22 +553,11 @@ details#filterPanel summary {
 }
 
 .resultInfo {
-  font-size: 11px;
-  color: #8e8e93;
-  padding: 6px 16px;
-  background: #fbfbfd;
-  border-bottom: 1px solid #f2f2f7;
+  display: none !important;
 }
 
 .totalRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 16px;
-  border-top: 1px solid #f2f2f7;
-  margin-top: 12px;
-  font-size: 14px;
-  font-weight: 600;
+  display: none !important;
 }
 
 /* Dialog / Modal Styling */
@@ -632,13 +591,15 @@ dialog::backdrop {
 }
 
 .badge {
-  margin-left: auto;
-  background: #fff0e6;
-  color: #a33c00;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 700;
+  display: none !important;
+}
+
+.demoNote {
+  display: none !important;
+}
+
+.fineprint {
+  display: none !important;
 }
 
 .detailBody {

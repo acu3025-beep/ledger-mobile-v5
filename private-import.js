@@ -40,7 +40,7 @@
   render = function () {
     oldRender();
     if (imported && $('count')) {
-      $('count').textContent = imported.transactions.length + ' transactions · DEMO';
+      $('count').textContent = '';
     }
   };
 
@@ -55,11 +55,7 @@
   show = function (t) {
     oldShow(t);
     const note = document.querySelector('.demoNote');
-    if (!imported) {
-      if (note) note.textContent = 'Demo transaction';
-      return;
-    }
-    if (note) note.textContent = t.modified ? 'DEMO: amount and date adjusted' : 'Source transaction · DEMO';
+    if (note) note.textContent = '';
     const fieldsEl = $('detailFields');
     fieldsEl.replaceChildren();
     const values = {
@@ -72,7 +68,6 @@
     if (t.modified) {
       values['Original date'] = dateLabel(t.originalDate);
       values['Original amount'] = money(t.originalAmount);
-      values['DEMO modification'] = 'Scenario adjustment: EUR -1.050,00 on the 25th.';
     }
     for (const [key, value] of Object.entries(values)) {
       const dt = document.createElement('dt');
